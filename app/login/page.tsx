@@ -4,21 +4,22 @@ import { LoginForm } from "@/components/forms/login-form";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ROUTES } from "@/lib/constants";
 
-export default async function Home() {
+export default async function LoginPage() {
   const user = await getCurrentUser();
   if (user) {
     redirect(ROUTES.CHAT);
   }
   return (
-    <div className="min-h-screen flex items-center justify-center px-3 sm:px-4 py-6 sm:py-8 md:py-12 relative">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 md:py-12 relative">
       {/* Theme toggle in top right corner */}
-      <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+      <div className="absolute top-4 right-4">
         <ThemeToggle />
       </div>
-
+      
       <div className="max-w-lg w-full">
         <LoginForm />
       </div>
     </div>
   );
 }
+

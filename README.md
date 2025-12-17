@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Tact0 Client Interface
 
-## Getting Started
+Enterprise-friendly Next.js (App Router) interface for the Tact0 Engine with:
 
-First, run the development server:
+- Dark-first theme + light toggle using your palette.
+- Zustand for UI/session state, TanStack Query for engine data.
+- Real auth (email/password) via Prisma + Supabase Postgres + JWT cookie.
+- Protected chat that proxies to the engine’s `/chat`.
+- Tailwind CSS v4.
+
+## Quickstart
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with your engine + Supabase:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_ENGINE_URL=https://your-engine.example.com
+NEXT_PUBLIC_ENGINE_API_KEY=
+DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<db>?sslmode=require
+AUTH_JWT_SECRET=generate_a_long_random_string
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Then:
+- `npx prisma generate`
+- `npm run dev -- --port 3001` (if engine also runs on 3000)
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- The app is Vercel-ready out of the box.  
+- Add the env vars above in your Vercel project settings (DATABASE_URL from Supabase, AUTH_JWT_SECRET, engine URL/API key).  
+- `npm run build` is the production build command; `next start` serves it.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Auth endpoints: `/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me` (JWT cookie).  
+- Chat proxy: `/api/chat` → `${NEXT_PUBLIC_ENGINE_URL}/chat` (adds engine API key server-side).  
+- Middleware protects `/chat` routes.  
+- Theme tokens live in `app/globals.css` (`background`, `surface`, `text`, `signal`).  
+- UI components live under `components/`; engine HTTP wiring is in `lib/api-client.ts`.
