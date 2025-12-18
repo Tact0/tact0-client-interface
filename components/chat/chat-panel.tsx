@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { ROUTES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Card } from "@/components/ui/card";
 import type { Message } from "@/lib/types";
 
 export function ChatPanel() {
@@ -66,22 +65,10 @@ export function ChatPanel() {
     return [...messages].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   }, [messages]);
 
-  if (!hydrated) {
-    return (
-      <Card className="p-8">
-        <p className="text-sm text-muted-foreground">Loading session…</p>
-      </Card>
-    );
-  }
-
-  if (!session?.id) {
-    return (
-      <Card className="p-8">
-        <p className="text-sm text-muted-foreground">
-          You are not authenticated. Redirecting to login…
-        </p>
-      </Card>
-    );
+  // Don't render anything while hydrating or if not authenticated
+  // The useEffect handles the redirect to login
+  if (!hydrated || !session?.id) {
+    return null;
   }
 
   const handleSend = () => {
@@ -90,7 +77,7 @@ export function ChatPanel() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-80px)] md:h-[calc(100vh-80px)]">
+    <div className="flex h-[calc(100dvh-56px)] md:h-[calc(100dvh-64px)]">
       {/* History Sidebar - Hidden on mobile, visible on desktop */}
       <aside className={cn(
         "hidden md:flex flex-col w-[280px] border-r border-border/50 bg-card p-4 space-y-3 overflow-y-auto",
@@ -181,28 +168,41 @@ export function ChatPanel() {
           )}
         </div>
 
-        <div className="border-t border-border/50 bg-background/50 px-4 md:px-6 py-3 md:py-4 space-y-3">
-          <Textarea
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            rows={3}
-            placeholder="Type a message to the engine..."
-          />
-          <div className="flex items-center gap-2 md:gap-3 justify-end">
-            <Button
-              variant="ghost"
-              onClick={() => setDraft("")}
-              type="button"
-            >
-              Clear
-            </Button>
-            <Button
-              onClick={handleSend}
-              type="button"
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Sending…" : "Send"}
-            </Button>
+        <div className="border-t border-border/50 bg-background/50 px-4 md:px-8 lg:px-12 pt-4 md:pt-5 pb-[max(20px,env(safe-area-inset-bottom))] md:pb-6">
+          <div className="max-w-3xl mx-auto space-y-4">
+            <Textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              rows={2}
+              placeholder="Type a message to the engine..."
+              className="min-h-[56px] resize-none"
+            />
+            <div className="flex items-center justify-between gap-3">
+              <p className="text-[10px] md:text-xs text-muted-foreground/70">
+                Tact0 can make mistakes. Check important info.{" "}
+                <button type="button" className="underline hover:text-muted-foreground transition-colors">
+                  Cookie Preferences
+                </button>
+              </p>
+              <div className="flex items-center gap-3 flex-shrink-0">
+                <Button
+                  variant="ghost"
+                  onClick={() => setDraft("")}
+                  type="button"
+                  size="sm"
+                >
+                  Clear
+                </Button>
+                <Button
+                  onClick={handleSend}
+                  type="button"
+                  disabled={mutation.isPending}
+                  size="sm"
+                >
+                  {mutation.isPending ? "Sending…" : "Send"}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

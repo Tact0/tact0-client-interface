@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @layer base {
-:root {
+  :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -70,18 +70,25 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   --font-sans: var(--font-inter);
-  }
+}
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 body {
   background: hsl(var(--background));
   color: hsl(var(--foreground));
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
-  min-height: 100vh;
-  margin: 0;
 }
 
 a {
@@ -104,4 +111,33 @@ a {
   * {
     -webkit-overflow-scrolling: touch;
   }
+}
+
+/* iOS Safe Area Support */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Dynamic viewport height for mobile browsers */
+:root {
+  --header-height: 56px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 64px;
+  }
+}
+
+/* Utility class for mobile-safe full height */
+.h-mobile-safe {
+  height: calc(100vh - var(--header-height));
+  height: calc(100dvh - var(--header-height));
+}
+
+/* Ensure inputs don't get hidden behind mobile browser chrome */
+.mobile-input-safe {
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
 }

@@ -16,8 +16,8 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-20 backdrop-blur-md border-b border-border/50 bg-background/80">
+    <div className="h-[100dvh] bg-background text-foreground flex flex-col overflow-hidden">
+      <header className="flex-shrink-0 z-20 backdrop-blur-md border-b border-border/50 bg-background/80">
         <div className="mx-auto flex max-w-full items-center justify-between px-4 md:px-6 py-3 md:py-4">
           <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
             <div className="h-9 w-9 md:h-10 md:w-10 rounded-md bg-primary/30 border border-border/50 flex items-center justify-center font-semibold text-foreground flex-shrink-0">
@@ -64,7 +64,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="w-full h-full">{children}</main>
+      <main className="w-full flex-1 overflow-hidden">{children}</main>
     </div>
   );
 }
