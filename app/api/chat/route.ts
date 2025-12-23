@@ -1,30 +1,39 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getCurrentUser } from "@/lib/server-auth";
 import { AUTH_ERRORS } from "@/lib/constants";
+import { getCurrentUser } from "@/lib/server-auth";
 
 const chatRequestSchema = z.object({
   text: z.string().min(1, "Message cannot be empty"),
 });
 
-const ENGINE_URL = process.env.NEXT_PUBLIC_ENGINE_URL;
-const ENGINE_API_KEY = process.env.NEXT_PUBLIC_ENGINE_API_KEY;
+const ENGINE_URL = process.env.ENGINE_URL;
+const ENGINE_API_KEY = process.env.ENGINE_API_KEY;
 
 export async function POST(req: Request) {
   try {
     const user = await getCurrentUser();
     if (!user) {
-      return NextResponse.json({ error: AUTH_ERRORS.UNAUTHORIZED }, { status: 401 });
+      return NextResponse.json(
+        { error: AUTH_ERRORS.UNAUTHORIZED },
+        { status: 401 }
+      );
     }
 
     if (!ENGINE_URL) {
-      return NextResponse.json({ error: AUTH_ERRORS.MISSING_ENGINE_URL }, { status: 500 });
+      return NextResponse.json(
+        { error: AUTH_ERRORS.MISSING_ENGINE_URL },
+        { status: 500 }
+      );
     }
 
     const body = await req.json();
     const parsed = chatRequestSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: AUTH_ERRORS.INVALID_INPUT }, { status: 400 });
+      return NextResponse.json(
+        { error: AUTH_ERRORS.INVALID_INPUT },
+        { status: 400 }
+      );
     }
 
     const engineResponse = await fetch(`${ENGINE_URL}/chat`, {
@@ -52,6 +61,9 @@ export async function POST(req: Request) {
     return NextResponse.json(data);
   } catch (error) {
     console.error("Chat API error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

@@ -145,9 +145,6 @@ export function ChatPanel() {
                 {session.email}
               </span>
             )}
-            <span className="text-xs px-2.5 py-1.5 bg-muted/50 text-muted-foreground rounded-md hidden lg:inline border border-border/50">
-              API: {process.env.NEXT_PUBLIC_ENGINE_URL ?? "Not set"}
-            </span>
           </div>
         </div>
 
