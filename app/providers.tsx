@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useSessionStore } from "@/store/session-store";
 import { useThemeStore } from "@/store/theme-store";
+import { useLanguageStore } from "@/store/language-store";
 
 function ThemeHydrator() {
   const { theme, hydrate, hydrated } = useThemeStore();
@@ -36,6 +37,16 @@ function SessionHydrator() {
 
 import { QUERY_CONFIG } from "@/lib/constants";
 
+function LanguageHydrator() {
+  const hydrate = useLanguageStore((s) => s.hydrate);
+
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
+
+  return null;
+}
+
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
@@ -57,6 +68,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <SessionHydrator />
       <ThemeHydrator />
+      <LanguageHydrator />
       {children}
     </QueryClientProvider>
   );
