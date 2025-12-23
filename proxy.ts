@@ -19,4 +19,3 @@ export default async function proxy(req: NextRequest) {
 export const config = {
   matcher: ["/chat/:path*", "/chat"],
 };
-

@@ -1,43 +1,70 @@
-## Tact0 Client Interface
+# Tact0 Client Interface
 
-Enterprise-friendly Next.js (App Router) interface for the Tact0 Engine with:
+Modern web interface for interacting with the Tact0 Engine. Built with Next.js and featuring a clean, responsive design with multi-language support.
 
-- Dark-first theme + light toggle using your palette.
-- Zustand for UI/session state, TanStack Query for engine data.
-- Real auth (email/password) via Prisma + Supabase Postgres + JWT cookie.
-- Protected chat that proxies to the engine’s `/chat`.
-- Tailwind CSS v4.
+## Features
 
-## Quickstart
+- User authentication and session management
+- Chat interface for communicating with the Tact0 Engine
+- Multi-language support (English, Spanish, German)
+- Dark and light theme modes
+- Responsive design for desktop and mobile devices
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20 or higher
+- PostgreSQL database
+- Tact0 Engine instance
+
+### Installation
+
+1. Install dependencies:
 
 ```bash
 npm install
+```
+
+2. Set up environment variables by creating a `.env.local` file:
+
+```env
+DATABASE_URL=your_database_url
+AUTH_JWT_SECRET=your_jwt_secret
+ENGINE_URL=your_engine_url
+ENGINE_API_KEY=your_engine_api_key
+```
+
+3. Set up the database:
+
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
+
+4. Start the development server:
+
+```bash
 npm run dev
 ```
 
-Create `.env.local` with your engine + Supabase:
+The application will be available at `http://localhost:3000`.
 
-```
-NEXT_PUBLIC_ENGINE_URL=https://your-engine.example.com
-NEXT_PUBLIC_ENGINE_API_KEY=
-DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<db>?sslmode=require
-AUTH_JWT_SECRET=generate_a_long_random_string
-```
+## Available Scripts
 
-Then:
-- `npx prisma generate`
-- `npm run dev -- --port 3001` (if engine also runs on 3000)
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run code linting
 
-## Deploy on Vercel
+## Tech Stack
 
-- The app is Vercel-ready out of the box.  
-- Add the env vars above in your Vercel project settings (DATABASE_URL from Supabase, AUTH_JWT_SECRET, engine URL/API key).  
-- `npm run build` is the production build command; `next start` serves it.
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- Tailwind CSS
+- PostgreSQL with Prisma
 
-## Notes
+## License
 
-- Auth endpoints: `/api/auth/register`, `/api/auth/login`, `/api/auth/logout`, `/api/auth/me` (JWT cookie).  
-- Chat proxy: `/api/chat` → `${NEXT_PUBLIC_ENGINE_URL}/chat` (adds engine API key server-side).  
-- Middleware protects `/chat` routes.  
-- Theme tokens live in `app/globals.css` (`background`, `surface`, `text`, `signal`).  
-- UI components live under `components/`; engine HTTP wiring is in `lib/api-client.ts`.
+Private - All rights reserved
