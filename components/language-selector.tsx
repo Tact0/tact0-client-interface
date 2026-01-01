@@ -22,8 +22,7 @@ export function LanguageSelector() {
           variant="ghost"
           size="icon"
           aria-label={t("language")}
-          disabled={!hydrated}
-        >
+          disabled={!hydrated}>
           <Languages className="h-4 w-4" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
@@ -36,8 +35,7 @@ export function LanguageSelector() {
             checked={language === option.code}
             onCheckedChange={(checked) => {
               if (checked) setLanguage(option.code);
-            }}
-          >
+            }}>
             {option.label}
           </DropdownMenuCheckboxItem>
         ))}

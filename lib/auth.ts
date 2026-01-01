@@ -6,6 +6,9 @@ const AUTH_COOKIE = "tact0_auth";
 const JWT_ALGORITHM = "HS256";
 const JWT_EXPIRATION = "7d";
 const DEFAULT_ROLE: UserRole = "USER";
+const AUTH_COOKIE_SECURE =
+  process.env.AUTH_COOKIE_SECURE ??
+  (process.env.NODE_ENV === "production" ? "true" : "false");
 
 function getSecret(): Uint8Array {
   const secret = process.env.AUTH_JWT_SECRET;
@@ -60,7 +63,7 @@ export function authCookieOptions() {
     name: AUTH_COOKIE,
     options: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: AUTH_COOKIE_SECURE !== "false",
       sameSite: "lax" as const,
       path: "/",
       maxAge: COOKIE_MAX_AGE,

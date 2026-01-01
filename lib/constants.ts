@@ -28,4 +28,3 @@ export const QUERY_CONFIG = {
   STALE_TIME: 1000 * 30, // 30 seconds
   REFETCH_ON_WINDOW_FOCUS: false,
 } as const;
-

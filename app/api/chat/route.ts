@@ -36,16 +36,17 @@ export async function POST(req: Request) {
       );
     }
 
-    const engineResponse = await fetch(`${ENGINE_URL}/chat`, {
+    const engineResponse = await fetch(`${ENGINE_URL}/api/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(ENGINE_API_KEY ? { "x-api-key": ENGINE_API_KEY } : {}),
+        ...(ENGINE_API_KEY
+          ? { Authorization: `Bearer ${ENGINE_API_KEY}` }
+          : {}),
       },
       body: JSON.stringify({
-        text: parsed.data.text,
+        message: parsed.data.text,
         sessionId: `u-${user.id}`,
-        userId: user.id,
       }),
     });
 
@@ -58,7 +59,7 @@ export async function POST(req: Request) {
     }
 
     const data = await engineResponse.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, { status: engineResponse.status });
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(

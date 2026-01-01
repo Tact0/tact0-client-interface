@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import type { Language } from "@/lib/i18n/translations";
 
-type LanguageState = {
+export type LanguageState = {
   language: Language;
   hydrated: boolean;
   setLanguage: (language: Language) => void;

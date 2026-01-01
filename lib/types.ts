@@ -4,7 +4,14 @@
 
 import type { UserRole } from "./schemas";
 
-export type { UserRole, User, AuthInput, LoginResponse, EngineChatResponse } from "./schemas";
+export type {
+  UserRole,
+  User,
+  AuthInput,
+  LoginResponse,
+  SessionResponse,
+  EngineChatResponse,
+} from "./schemas";
 
 export interface Session {
   email?: string;
@@ -18,4 +25,3 @@ export interface Message {
   content: string;
   createdAt: string;
 }
-

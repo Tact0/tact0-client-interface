@@ -32,8 +32,7 @@ function CookieRow({ title, description, active, locked }: CookieRowProps) {
           aria-hidden="true"
           className={`relative h-6 w-11 rounded-full border border-border/60 transition ${
             active ? "bg-primary/70" : "bg-muted/50"
-          }`}
-        >
+          }`}>
           <span
             className={`absolute top-0.5 h-5 w-5 rounded-full bg-background shadow transition ${
               active ? "right-0.5" : "left-0.5"
@@ -58,8 +57,7 @@ export function CookiePreferencesDialog() {
       <AlertDialogTrigger asChild>
         <button
           type="button"
-          className="underline hover:text-muted-foreground transition-colors"
-        >
+          className="underline hover:text-muted-foreground transition-colors">
           {t("cookiePreferences")}
         </button>
       </AlertDialogTrigger>
@@ -74,8 +72,7 @@ export function CookiePreferencesDialog() {
                 variant="ghost"
                 size="icon"
                 aria-label={t("close")}
-                className="-mr-2"
-              >
+                className="-mr-2">
                 <X className="h-4 w-4" />
               </Button>
             </AlertDialogCancel>

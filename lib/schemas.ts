@@ -31,11 +31,18 @@ export const loginResponseSchema = z.object({
 });
 
 /**
+ * Session response schema
+ */
+export const sessionResponseSchema = z.object({
+  user: userSchema.nullable(),
+});
+
+/**
  * Engine chat response schema
  */
 export const engineChatResponseSchema = z.object({
   mode: z.string().optional(),
-  prompt: z.string(),
+  reply: z.string(),
   state: z.unknown().optional(),
   warnings: z.array(z.string()).optional(),
 });
@@ -44,5 +51,5 @@ export const engineChatResponseSchema = z.object({
 export type AuthInput = z.infer<typeof authSchema>;
 export type User = z.infer<typeof userSchema>;
 export type LoginResponse = z.infer<typeof loginResponseSchema>;
+export type SessionResponse = z.infer<typeof sessionResponseSchema>;
 export type EngineChatResponse = z.infer<typeof engineChatResponseSchema>;
-
