@@ -6,6 +6,7 @@ import { useChatStore } from "@/store/chat-store";
 import { ROUTES } from "@/lib/constants";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { LanguageSelector } from "@/components/language-selector";
 import { useI18n } from "@/lib/i18n/use-i18n";
 import { toast } from "sonner";
@@ -22,6 +23,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function SiteShellHeader() {
   const router = useRouter();
@@ -62,60 +70,31 @@ export function SiteShellHeader() {
         </div>
 
         {session && (
-          <div className="hidden md:flex items-center gap-2">
-            {session.email && (
-              <span className="relative text-xs px-2.5 py-1.5 bg-muted/50 text-muted-foreground rounded-md truncate max-w-[150px] lg:max-w-[200px] border border-border/50 overflow-hidden">
-                {session.email}
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 right-0 w-1/2 border-t-2 border-r-2 border-b-2 border-[#2BCC96] rounded-r-md"
-                />
-              </span>
-            )}
+          <div className="flex items-center gap-2">
             <LanguageSelector />
             <ThemeToggle />
             <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("logout")}
-                  title={t("logout")}>
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{t("logoutConfirmTitle")}</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    {t("logoutConfirmDesc")}
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleLogout}>
-                    {t("continue")}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-        )}
-
-        {session && (
-          <div className="md:hidden flex items-center gap-2">
-            <LanguageSelector />
-            <ThemeToggle />
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("logout")}
-                  title={t("logout")}>
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              </AlertDialogTrigger>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="max-w-[160px] md:max-w-[220px] truncate px-2">
+                    {session.email ?? t("account")}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href="/cookie-policy" target="_blank" rel="noreferrer">
+                      {t("policies")}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem disabled>{t("settings")}</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <AlertDialogTrigger asChild>
+                    <DropdownMenuItem>{t("logout")}</DropdownMenuItem>
+                  </AlertDialogTrigger>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <AlertDialogContent>
                 <AlertDialogHeader>
                   <AlertDialogTitle>{t("logoutConfirmTitle")}</AlertDialogTitle>

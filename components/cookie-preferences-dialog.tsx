@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +11,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Switch } from "@/components/ui/switch";
 import { useI18n } from "@/lib/i18n/use-i18n";
 
 type CookieRowProps = {
@@ -17,28 +19,30 @@ type CookieRowProps = {
   description: string;
   active: boolean;
   locked?: boolean;
+  onToggle?: () => void;
 };
 
-function CookieRow({ title, description, active, locked }: CookieRowProps) {
+function CookieRow({
+  title,
+  description,
+  active,
+  locked,
+  onToggle,
+}: CookieRowProps) {
   const { t } = useI18n();
   return (
     <div className="border-t border-border/60 py-5">
-      <div className="flex items-start justify-between gap-6">
+      <div className="flex items-start gap-6">
         <div className="space-y-1">
           <p className="text-sm font-semibold text-foreground">{title}</p>
           <p className="text-xs text-muted-foreground">{description}</p>
         </div>
-        <div
-          aria-hidden="true"
-          className={`relative h-6 w-11 rounded-full border border-border/60 transition ${
-            active ? "bg-primary/70" : "bg-muted/50"
-          }`}>
-          <span
-            className={`absolute top-0.5 h-5 w-5 rounded-full bg-background shadow transition ${
-              active ? "right-0.5" : "left-0.5"
-            }`}
-          />
-        </div>
+        <Switch
+          className="relative ml-auto"
+          checked={active}
+          disabled={locked}
+          onCheckedChange={locked ? undefined : onToggle}
+        />
       </div>
       {locked && (
         <p className="mt-2 text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
@@ -51,6 +55,8 @@ function CookieRow({ title, description, active, locked }: CookieRowProps) {
 
 export function CookiePreferencesDialog() {
   const { t } = useI18n();
+  const [analyticsEnabled, setAnalyticsEnabled] = useState(false);
+  const [marketingEnabled, setMarketingEnabled] = useState(false);
 
   return (
     <AlertDialog>
@@ -80,7 +86,11 @@ export function CookiePreferencesDialog() {
         </AlertDialogHeader>
         <div className="space-y-4 pt-4 text-sm text-muted-foreground">
           <p>{t("cookieIntro")}</p>
-          <a className="underline" href="#" rel="noreferrer">
+          <a
+            className="underline"
+            href="/cookie-policy"
+            target="_blank"
+            rel="noreferrer">
             {t("learnMore")}
           </a>
         </div>
@@ -94,12 +104,14 @@ export function CookiePreferencesDialog() {
           <CookieRow
             title={t("cookieAnalyticsTitle")}
             description={t("cookieAnalyticsDesc")}
-            active={false}
+            active={analyticsEnabled}
+            onToggle={() => setAnalyticsEnabled((prev) => !prev)}
           />
           <CookieRow
             title={t("cookieMarketingTitle")}
             description={t("cookieMarketingDesc")}
-            active={false}
+            active={marketingEnabled}
+            onToggle={() => setMarketingEnabled((prev) => !prev)}
           />
         </div>
       </AlertDialogContent>

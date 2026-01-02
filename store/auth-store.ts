@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import type { Session } from "@/lib/types";
-import { getSessionRequest, logoutRequest } from "@/lib/api-client";
+import { logoutRequest } from "@/lib/api-client";
 
 export type AuthState = {
   session?: Session;
@@ -29,12 +29,6 @@ export const useSessionStore = create<AuthState>((set) => ({
       set({ session: initialSession, hydrated: true });
       return;
     }
-
-    try {
-      const data = await getSessionRequest();
-      set({ session: data.user ?? undefined, hydrated: true });
-    } catch {
-      set({ session: undefined, hydrated: true });
-    }
+    set({ session: undefined, hydrated: true });
   },
 }));

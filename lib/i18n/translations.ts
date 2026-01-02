@@ -40,6 +40,9 @@ export const translations = {
     cookieMarketingDesc:
       "These cookies help us measure the effectiveness of our marketing campaigns.",
     cookieAlwaysActive: "Always active",
+    policies: "Policies",
+    settings: "Settings",
+    account: "Account",
     close: "Close",
     clear: "Clear",
     send: "Send",
@@ -107,6 +110,9 @@ export const translations = {
     cookieMarketingDesc:
       "Estas cookies nos ayudan a medir la efectividad de nuestras campanas de marketing.",
     cookieAlwaysActive: "Siempre activo",
+    policies: "Politicas",
+    settings: "Configuracion",
+    account: "Cuenta",
     close: "Cerrar",
     clear: "Limpiar",
     send: "Enviar",
@@ -174,6 +180,9 @@ export const translations = {
     cookieMarketingDesc:
       "Diese Cookies helfen uns, die Wirksamkeit unserer Marketingkampagnen zu messen.",
     cookieAlwaysActive: "Immer aktiv",
+    policies: "Richtlinien",
+    settings: "Einstellungen",
+    account: "Konto",
     close: "Schliessen",
     clear: "Leeren",
     send: "Senden",
