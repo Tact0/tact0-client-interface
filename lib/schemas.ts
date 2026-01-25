@@ -40,9 +40,29 @@ export const engineChatResponseSchema = z.object({
   warnings: z.array(z.string()).optional(),
 });
 
+/**
+ * Debug chat response schema (includes additional debug fields)
+ */
+export const debugChatResponseSchema = z.object({
+  mode: z.string().optional(),
+  prompt: z.string(), // Engine prompt
+  llmPrompt: z.string(), // Final prompt sent to LLM
+  state: z.unknown().optional(),
+  warnings: z.array(z.string()).optional(),
+  expression: z.object({
+    language: z.string().optional(),
+    constraint: z.string().optional(),
+    maxSentences: z.number().optional(),
+    validator: z.string().optional(),
+    blockedBy: z.string().optional(),
+  }).optional(),
+  text: z.string(), // The actual LLM response
+});
+
 // Type exports
 export type AuthInput = z.infer<typeof authSchema>;
 export type User = z.infer<typeof userSchema>;
 export type LoginResponse = z.infer<typeof loginResponseSchema>;
 export type EngineChatResponse = z.infer<typeof engineChatResponseSchema>;
+export type DebugChatResponse = z.infer<typeof debugChatResponseSchema>;
 

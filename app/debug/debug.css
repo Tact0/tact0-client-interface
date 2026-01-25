@@ -1,0 +1,546 @@
+/* Debug UI Styles - Adapted from tact0-engine-main/src/ui/style.css */
+
+.debug-app {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  grid-template-rows: minmax(0, 1fr);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.debug-sidebar {
+  background: #f2f3f7;
+  border-right: 1px solid #e5e7eb;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.debug-section-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.debug-section-header {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #ffffff;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+  border: 1px solid rgba(79, 70, 229, 0.3);
+}
+
+.debug-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.debug-brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.debug-dot-red {
+  background: #ff6b6b;
+}
+.debug-dot-yellow {
+  background: #fbbf24;
+}
+.debug-dot-green {
+  background: #34d399;
+}
+
+.debug-brand-name {
+  margin-left: 8px;
+}
+
+.debug-panel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.debug-panel-title {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #6b7280;
+}
+
+.debug-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+}
+
+.debug-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.debug-metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.debug-metric-label {
+  font-size: 13px;
+  color: #6b7280;
+  min-width: 110px;
+}
+
+.debug-metric-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+.debug-metric-fill {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6);
+  transition: width 0.3s ease;
+}
+
+.debug-metric-value {
+  font-size: 12px;
+  color: #6b7280;
+  min-width: 36px;
+  text-align: right;
+}
+
+.debug-anchor-categoricals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.debug-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.debug-tag-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.debug-event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.debug-event-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.debug-event-chip-off {
+  background: #f3f4f6;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.debug-event-status {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: #c7d2fe;
+  color: #312e81;
+}
+
+.debug-event-chip-off .debug-event-status {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
+.debug-list {
+  margin: 0;
+  padding-left: 16px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.debug-list li {
+  margin-bottom: 6px;
+}
+
+.debug-expression {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.debug-expression-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.debug-expression-label {
+  color: #6b7280;
+  min-width: 110px;
+}
+
+.debug-expression-value {
+  text-align: right;
+  color: #1a1c23;
+  font-weight: 600;
+}
+
+.debug-debug {
+  color: #6b7280;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.debug-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.debug-chat-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.debug-action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 0 1 auto;
+  order: 2;
+}
+
+@media (max-width: 800px) {
+  .debug-action-buttons {
+    flex: 1 1 100%;
+    margin-top: 8px;
+  }
+}
+
+.debug-action-buttons > div {
+  color: #6b7280;
+  font-size: 12px;
+  padding: 0 4px;
+}
+
+.debug-clear-session-btn {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.debug-clear-session-btn:hover {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.debug-session-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+  order: 1;
+}
+
+@media (max-width: 800px) {
+  .debug-session-info {
+    flex: 1 1 100%;
+  }
+}
+
+.debug-session-title {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.debug-session-input {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  min-width: 260px;
+  font-size: 14px;
+}
+
+.debug-turn-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid #e5e7eb;
+}
+
+.debug-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #4f46e5;
+  text-align: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.debug-pill-ghost {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.debug-pill-active {
+  background: #4f46e5;
+  color: #fff;
+}
+
+.debug-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #f7f8fb;
+}
+
+.debug-msg {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.debug-msg-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.debug-msg-bubble {
+  padding: 12px 14px;
+  border-radius: 12px;
+  max-width: 600px;
+  line-height: 1.5;
+  color: #1a1c23;
+}
+
+.debug-msg-user .debug-msg-bubble {
+  background: #dbeafe;
+  color: #0f172a;
+  align-self: flex-end;
+}
+
+.debug-msg-engine .debug-msg-bubble {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: #1a1c23;
+}
+
+.debug-composer {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.debug-composer input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #1a1c23;
+  background: #ffffff;
+}
+
+.debug-composer input::placeholder {
+  color: #9ca3af;
+}
+
+.debug-composer button {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #4f46e5;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.debug-composer button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.debug-prompt-section {
+  flex: 1;
+  min-height: 0;
+  background: #f7f8fb;
+  border-top: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.debug-prompt-header {
+  flex: 0 0 auto;
+  margin-bottom: 8px;
+}
+
+.debug-prompt-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #60a5fa;
+  text-shadow: 0 0 6px rgba(96, 165, 250, 0.4);
+}
+
+.debug-prompt-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: block;
+}
+
+.debug-prompt-text {
+  margin: 0;
+  padding: 16px;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  font-family: "Monaco", "Menlo", "Consolas", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #e5e5e5;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Terminal syntax highlighting - for dark terminal background */
+.debug-prompt-text .term-section {
+  color: #60a5fa;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin: 16px 0 8px 0;
+  display: block;
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+}
+
+.debug-prompt-text .term-key {
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.debug-prompt-text .term-value {
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+.debug-prompt-text .term-string {
+  color: #34d399;
+  font-weight: 500;
+}
+
+.debug-prompt-text .term-number {
+  color: #f472b6;
+  font-weight: 600;
+}
+
+.debug-prompt-text .term-comment {
+  color: #6b7280;
+  font-style: italic;
+}
+
+.debug-prompt-text .term-instruction {
+  color: #a78bfa;
+  font-weight: 500;
+}
+
+.debug-prompt-text .term-forbid {
+  color: #f87171;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.debug-prompt-text .term-only {
+  color: #4ade80;
+  font-weight: 700;
+  text-transform: uppercase;
+}

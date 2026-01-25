@@ -1,5 +1,5 @@
-import { engineChatResponseSchema, loginResponseSchema } from "./schemas";
-import type { LoginResponse, EngineChatResponse } from "./schemas";
+import { debugChatResponseSchema, engineChatResponseSchema, loginResponseSchema } from "./schemas";
+import type { DebugChatResponse, LoginResponse, EngineChatResponse } from "./schemas";
 
 /**
  * Generic API request handler with error handling and validation
@@ -57,5 +57,20 @@ export async function chatWithEngine(input: { text: string }): Promise<EngineCha
       body: JSON.stringify({ text: input.text }),
     },
     engineChatResponseSchema
+  );
+}
+
+/**
+ * Send a chat message to the debug engine endpoint (admin only)
+ * Returns full debug data including metrics, state, expression, etc.
+ */
+export async function debugChatWithEngine(input: { text: string; sessionId?: string }): Promise<DebugChatResponse> {
+  return apiRequest<DebugChatResponse>(
+    "/api/debug/chat",
+    {
+      method: "POST",
+      body: JSON.stringify({ text: input.text, sessionId: input.sessionId }),
+    },
+    debugChatResponseSchema
   );
 }

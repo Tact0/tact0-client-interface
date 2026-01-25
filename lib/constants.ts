@@ -14,6 +14,7 @@ export const ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   CHAT: "/chat",
+  DEBUG: "/debug",
 } as const;
 
 export const USER_ROLES = {
