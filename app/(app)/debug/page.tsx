@@ -6,6 +6,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 
 export default async function DebugPage() {
   // Server-side route protection - require ADMIN role
+  // Note: AppLayout already checks for auth, but we need to check for ADMIN role
   const user = await getCurrentUser();
   if (!user || user.role !== USER_ROLES.ADMIN) {
     redirect(ROUTES.CHAT);

@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { debugChatWithEngine } from "@/lib/api-client";
 import { ROUTES } from "@/lib/constants";
 import type { DebugChatResponse } from "@/lib/schemas";
-import "../../app/debug/debug.css";
+import "../../app/(app)/debug/debug.css";
 
 const METRICS_KEYS = ["alive", "control", "contact", "warmth"];
 const SIGNALS_KEYS = ["pauseSignal", "contactSignal", "depthSignal", "asymmetrySignal", "scaleLevel", "scaleJump"];
