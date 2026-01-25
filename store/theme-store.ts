@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { create } from "zustand";
 
 type Theme = "dark" | "light";
 
-type ThemeState = {
+export type ThemeState = {
   theme: Theme;
   hydrated: boolean;
   setTheme: (theme: Theme) => void;
@@ -21,9 +21,6 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     set({ theme, hydrated: true });
     if (typeof window !== "undefined") {
       localStorage.setItem(THEME_KEY, theme);
-      const root = window.document.documentElement;
-      root.classList.remove("light", "dark");
-      root.classList.add(theme);
     }
   },
   toggleTheme: () => {
@@ -35,9 +32,5 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     const stored = localStorage.getItem(THEME_KEY) as Theme | null;
     const theme = stored ?? "dark";
     set({ theme, hydrated: true });
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
   },
 }));
-

@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
     // Explicitly set the project root to avoid multi-lockfile warning.
     root: path.resolve(__dirname),
   },
+  typedRoutes: false,
 };
 
 export default nextConfig;

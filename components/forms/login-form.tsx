@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { loginRequest } from "@/lib/api-client";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore, type AuthState } from "@/store/auth-store";
 import { authSchema } from "@/lib/schemas";
 import { ROUTES } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
@@ -18,12 +18,24 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BorderBeam } from "@/components/border-beam";
-import { Github, Linkedin, MessageCircle, Heart } from "lucide-react";
+import {
+  CheckCircle2,
+  Github,
+  Linkedin,
+  MessageCircle,
+  Heart,
+} from "lucide-react";
 import Link from "next/link";
+import { useI18n } from "@/lib/i18n/use-i18n";
+import { toast } from "sonner";
+import { useShallow } from "zustand/shallow";
 
 export function LoginForm() {
   const router = useRouter();
-  const setSession = useSessionStore((s) => s.setSession);
+  const { setSession } = useSessionStore(
+    useShallow((state: AuthState) => ({ setSession: state.setSession }))
+  );
+  const { t } = useI18n();
   const [formState, setFormState] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<string | null>(null);
 
@@ -35,11 +47,14 @@ export function LoginForm() {
         id: data.user?.id,
         role: data.user?.role,
       });
+      toast.success(t("loginSuccess"), {
+        description: t("loginSuccessDesc"),
+        icon: <CheckCircle2 className="h-4 w-4 text-emerald-500" />,
+      });
       router.push(ROUTES.CHAT);
     },
     onError: (err) => {
-      const message =
-        err instanceof Error ? err.message : "Unable to sign in right now.";
+      const message = err instanceof Error ? err.message : t("unableToSignIn");
       setErrors(message);
     },
   });
@@ -50,10 +65,7 @@ export function LoginForm() {
     const parsed = authSchema.safeParse(formState);
     if (!parsed.success) {
       const firstError = parsed.error.issues[0];
-      setErrors(
-        firstError?.message ||
-          "Please enter a valid email and password (min 6 characters)."
-      );
+      setErrors(firstError?.message || t("invalidCredentials"));
       return;
     }
     mutation.mutate(parsed.data);
@@ -71,17 +83,17 @@ export function LoginForm() {
       <CardHeader className="p-4 sm:p-6">
         <div className="space-y-2">
           <CardTitle className="text-lg sm:text-xl md:text-2xl">
-            Begin your journey
+            {t("loginTitle")}
           </CardTitle>
           <CardDescription className="text-xs sm:text-sm">
-            Enter your credentials to access the Tact0 platform.
+            {t("loginDescription")}
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="p-4 sm:p-6 pt-0">
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("email")}</Label>
             <Input
               id="email"
               type="email"
@@ -90,13 +102,13 @@ export function LoginForm() {
               onChange={(e) =>
                 setFormState((prev) => ({ ...prev, email: e.target.value }))
               }
-              placeholder="you@company.com"
+              placeholder={t("emailPlaceholder")}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("password")}</Label>
             <Input
               id="password"
               type="password"
@@ -105,7 +117,7 @@ export function LoginForm() {
               onChange={(e) =>
                 setFormState((prev) => ({ ...prev, password: e.target.value }))
               }
-              placeholder="••••••••"
+              placeholder={t("passwordPlaceholder")}
               required
             />
           </div>
@@ -120,7 +132,7 @@ export function LoginForm() {
             type="submit"
             className="w-full"
             disabled={mutation.isPending}>
-            {mutation.isPending ? "Signing in..." : "Sign in"}
+            {mutation.isPending ? t("signingIn") : t("signIn")}
           </Button>
         </form>
       </CardContent>
@@ -151,11 +163,13 @@ export function LoginForm() {
           </Link>
           <div className="flex items-center gap-1.5 ml-1">
             <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-pink-500 fill-pink-500" />
-            <span className="text-foreground text-xs">4,3 tn</span>
+            <span className="text-foreground text-xs">
+              {t("communityStat")}
+            </span>
           </div>
         </div>
         <div className="text-muted-foreground text-center sm:text-right whitespace-nowrap">
-          © 2025 Tact0. All rights reserved.
+          {t("copyright")}
         </div>
       </div>
     </Card>

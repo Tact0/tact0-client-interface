@@ -1,5 +1,15 @@
-import { debugChatResponseSchema, engineChatResponseSchema, loginResponseSchema } from "./schemas";
-import type { DebugChatResponse, LoginResponse, EngineChatResponse } from "./schemas";
+import {
+  debugChatResponseSchema,
+  engineChatResponseSchema,
+  loginResponseSchema,
+  sessionResponseSchema,
+} from "./schemas";
+import type {
+  DebugChatResponse,
+  LoginResponse,
+  EngineChatResponse,
+  SessionResponse,
+} from "./schemas";
 
 /**
  * Generic API request handler with error handling and validation
@@ -11,6 +21,7 @@ async function apiRequest<T>(
 ): Promise<T> {
   const res = await fetch(url, {
     ...options,
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...options.headers,
@@ -34,7 +45,10 @@ async function apiRequest<T>(
 /**
  * Authenticate user with email and password
  */
-export async function loginRequest(input: { email: string; password: string }): Promise<LoginResponse> {
+export async function loginRequest(input: {
+  email: string;
+  password: string;
+}): Promise<LoginResponse> {
   return apiRequest<LoginResponse>(
     "/api/auth/login",
     {
@@ -45,11 +59,56 @@ export async function loginRequest(input: { email: string; password: string }): 
   );
 }
 
+/**
+ * Get current session (401 returns user: null)
+ */
+export async function getSessionRequest(): Promise<SessionResponse> {
+  const res = await fetch("/api/auth/me", {
+    method: "GET",
+    cache: "no-store",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (res.status === 401) {
+    return { user: null };
+  }
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || "Request failed");
+  }
+
+  const json = await res.json();
+  const parsed = sessionResponseSchema.safeParse(json);
+  if (!parsed.success) {
+    throw new Error("Invalid response format");
+  }
+
+  return parsed.data;
+}
+
+/**
+ * Logout current session
+ */
+export async function logoutRequest(): Promise<void> {
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
 
 /**
  * Send a chat message to the engine through the protected proxy
  */
-export async function chatWithEngine(input: { text: string }): Promise<EngineChatResponse> {
+export async function chatWithEngine(input: {
+  text: string;
+}): Promise<EngineChatResponse> {
   return apiRequest<EngineChatResponse>(
     "/api/chat",
     {

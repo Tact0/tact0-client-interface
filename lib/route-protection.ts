@@ -23,7 +23,10 @@ export async function requireAuth(request: NextRequest) {
  * Require specific role(s) for a route
  * Returns user and redirect response if not authorized
  */
-export async function requireRole(request: NextRequest, allowedRoles: UserRole[]) {
+export async function requireRole(
+  request: NextRequest,
+  allowedRoles: UserRole[]
+) {
   const { user, redirect } = await requireAuth(request);
   if (redirect) return { user: null, redirect };
 
@@ -35,4 +38,3 @@ export async function requireRole(request: NextRequest, allowedRoles: UserRole[]
 
   return { user, redirect: null };
 }
-
