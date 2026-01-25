@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
-import { useSessionStore } from "@/store/session-store";
+import { useSessionStore } from "@/store/auth-store";
 import { ROUTES, USER_ROLES } from "@/lib/constants";
 import { ThemeToggle } from "../theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -9,14 +9,14 @@ import { Button } from "@/components/ui/button";
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { session, clear } = useSessionStore();
+  const { session, logout } = useSessionStore();
 
   const isAdmin = session?.role === USER_ROLES.ADMIN;
   const isDebugMode = pathname === ROUTES.DEBUG;
   const isChatMode = pathname === ROUTES.CHAT;
 
   const handleLogout = async () => {
-    await clear();
+    await logout();
     router.push(ROUTES.LOGIN);
   };
 
