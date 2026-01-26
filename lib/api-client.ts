@@ -10,6 +10,7 @@ import type {
   EngineChatResponse,
   SessionResponse,
 } from "./schemas";
+import type { ZodSchema } from "zod";
 
 /**
  * Generic API request handler with error handling and validation
@@ -17,7 +18,7 @@ import type {
 async function apiRequest<T>(
   url: string,
   options: RequestInit,
-  schema: { safeParse: (data: unknown) => { success: boolean; data?: T } }
+  schema: ZodSchema<T>
 ): Promise<T> {
   const res = await fetch(url, {
     ...options,
@@ -36,10 +37,20 @@ async function apiRequest<T>(
   const json = await res.json();
   const parsed = schema.safeParse(json);
   if (!parsed.success) {
-    throw new Error("Invalid response format");
+    // TypeScript knows parsed.error exists when success is false
+    // ZodError uses 'issues' property, not 'errors'
+    const zodError = parsed.error;
+    console.error("Schema validation failed:", {
+      errors: zodError.issues,
+      received: json,
+    });
+    const errorMessages = zodError.issues.map((issue) => 
+      `${issue.path.map(String).join('.')}: ${issue.message}`
+    ).join(', ');
+    throw new Error(`Invalid response format: ${errorMessages}`);
   }
 
-  return parsed.data as T;
+  return parsed.data;
 }
 
 /**

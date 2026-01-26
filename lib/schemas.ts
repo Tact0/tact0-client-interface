@@ -52,8 +52,8 @@ export const engineChatResponseSchema = z.object({
  */
 export const debugChatResponseSchema = z.object({
   mode: z.string().optional(),
-  prompt: z.string(), // Engine prompt
-  llmPrompt: z.string(), // Final prompt sent to LLM
+  prompt: z.string().optional(), // Engine prompt
+  llmPrompt: z.string().optional(), // Final prompt sent to LLM
   state: z.unknown().optional(),
   warnings: z.array(z.string()).optional(),
   expression: z.object({
@@ -61,9 +61,9 @@ export const debugChatResponseSchema = z.object({
     constraint: z.string().optional(),
     maxSentences: z.number().optional(),
     validator: z.string().optional(),
-    blockedBy: z.string().optional(),
+    blockedBy: z.string().nullable().optional(),
   }).optional(),
-  text: z.string(), // The actual LLM response
+  text: z.string().optional(), // The actual LLM response
 });
 
 // Type exports

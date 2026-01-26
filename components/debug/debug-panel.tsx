@@ -255,7 +255,7 @@ export function DebugPanel() {
         },
         {
           author: "Tact0",
-          text: data.text || data.prompt,
+          text: data.text || data.prompt || data.llmPrompt || "No response",
           variant: "engine",
         },
       ]);
@@ -270,7 +270,10 @@ export function DebugPanel() {
         anchors: state?.anchors || {},
         vnpEvents: state?.vnpEvents || {},
         warnings: data.warnings || [],
-        expression: data.expression || {},
+        expression: data.expression ? {
+          ...data.expression,
+          blockedBy: data.expression.blockedBy ?? undefined,
+        } : {},
         mode: data.mode,
         turnIndex: state?.turnIndex ?? turnIndex + 1,
       });
