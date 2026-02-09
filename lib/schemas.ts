@@ -52,6 +52,7 @@ export const engineChatResponseSchema = z.object({
  */
 export const debugChatResponseSchema = z.object({
   mode: z.string().optional(),
+  reply: z.string().optional(), // LLM response (same as regular chat)
   prompt: z.string().optional(), // Engine prompt
   llmPrompt: z.string().optional(), // Final prompt sent to LLM
   state: z.unknown().optional(),
@@ -63,7 +64,7 @@ export const debugChatResponseSchema = z.object({
     validator: z.string().optional(),
     blockedBy: z.string().nullable().optional(),
   }).optional(),
-  text: z.string().optional(), // The actual LLM response
+  text: z.string().optional(), // The actual LLM response (alternative to reply)
 });
 
 // Type exports

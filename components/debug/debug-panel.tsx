@@ -255,7 +255,7 @@ export function DebugPanel() {
         },
         {
           author: "Tact0",
-          text: data.text || data.prompt || data.llmPrompt || "No response",
+          text: data.reply || data.text || data.prompt || data.llmPrompt || "No response",
           variant: "engine",
         },
       ]);
