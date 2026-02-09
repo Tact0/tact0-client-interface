@@ -35,15 +35,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: AUTH_ERRORS.INVALID_INPUT }, { status: 400 });
     }
 
-    // Proxy to the engine's /api/chat endpoint (same as regular chat)
-    // The engine returns debug data when requested
-    const debugEndpoint = `${ENGINE_URL}/api/chat`;
+    // Proxy to the engine's dedicated debug endpoint.
+    const debugEndpoint = `${ENGINE_URL}/api/debug/chat`;
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+    
+    if (ENGINE_API_KEY) {
+      headers.Authorization = `Bearer ${ENGINE_API_KEY}`;
+    }
+    
+    console.log("[DEBUG] Sending request to engine:", {
+      url: debugEndpoint,
+      hasApiKey: !!ENGINE_API_KEY,
+      apiKeyPrefix: ENGINE_API_KEY?.substring(0, 10) + "...",
+    });
+    
     const debugResponse = await fetch(debugEndpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(ENGINE_API_KEY ? { Authorization: `Bearer ${ENGINE_API_KEY}` } : {}),
-      },
+      headers,
       body: JSON.stringify({
         message: parsed.data.text,
         sessionId: parsed.data.sessionId ?? `u-${user.id}`,
@@ -85,6 +95,17 @@ export async function POST(req: Request) {
     }
 
     const data = await debugResponse.json();
+    
+    // Log the response structure for debugging
+    console.log("[DEBUG] Engine response structure:", {
+      hasState: !!data.state,
+      hasMetrics: !!(data.state?.metrics || data.metrics),
+      hasSignals: !!(data.state?.signals || data.signals),
+      hasMode: !!data.mode,
+      hasExpression: !!data.expression,
+      keys: Object.keys(data),
+    });
+    
     return NextResponse.json(data);
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);

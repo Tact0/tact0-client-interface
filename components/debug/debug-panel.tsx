@@ -246,6 +246,9 @@ export function DebugPanel() {
       return await debugChatWithEngine({ text, sessionId });
     },
     onSuccess: (data: DebugChatResponse, vars) => {
+      // Log the full response for debugging
+      console.log("[DEBUG] Engine response:", data);
+      
       setMessages((prev) => [
         ...prev,
         {
@@ -263,10 +266,23 @@ export function DebugPanel() {
       setTurnIndex((prev) => prev + 1);
 
       // Update debug state
-      const state = data.state as DebugState;
+      // Engine may return state nested in data.state or directly in data
+      const state = (data.state as any) || data;
+      const stateMetrics = state?.metrics || {};
+      const stateSignals = state?.signals || {};
+      
+      console.log("[DEBUG] Parsed state:", {
+        metrics: stateMetrics,
+        signals: stateSignals,
+        anchors: state?.anchors,
+        vnpEvents: state?.vnpEvents,
+        mode: data.mode,
+        expression: data.expression,
+      });
+      
       setDebugState({
-        metrics: state?.metrics || {},
-        signals: state?.metrics || {},
+        metrics: stateMetrics,
+        signals: stateSignals, // Fixed: was using state?.metrics instead of state?.signals
         anchors: state?.anchors || {},
         vnpEvents: state?.vnpEvents || {},
         warnings: data.warnings || [],
