@@ -57,9 +57,28 @@ export async function POST(req: Request) {
         statusText: debugResponse.statusText,
         errorText,
         url: `${ENGINE_URL}/chat`,
+        engineUrl: ENGINE_URL,
+        hasApiKey: !!ENGINE_API_KEY,
       });
+      
+      // Return more detailed error for debugging
+      let errorMessage = errorText || "Debug engine request failed";
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.error || errorJson.message || errorText;
+      } catch {
+        // Not JSON, use text as is
+      }
+      
       return NextResponse.json(
-        { error: errorText || "Debug engine request failed" },
+        { 
+          error: errorMessage,
+          details: {
+            status: debugResponse.status,
+            statusText: debugResponse.statusText,
+            engineUrl: ENGINE_URL,
+          }
+        },
         { status: debugResponse.status }
       );
     }
@@ -67,10 +86,44 @@ export async function POST(req: Request) {
     const data = await debugResponse.json();
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Debug chat API error:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorName = error instanceof Error ? error.name : undefined;
+    
+    console.error("Debug chat API error:", {
+      message: errorMessage,
+      name: errorName,
+      stack: error instanceof Error ? error.stack : undefined,
+      engineUrl: ENGINE_URL,
+    });
+    
+    // Check for common network/connection errors
+    if (
+      errorMessage.includes("fetch") || 
+      errorMessage.includes("ECONNREFUSED") ||
+      errorMessage.includes("network") ||
+      errorMessage.includes("timeout")
+    ) {
+      return NextResponse.json(
+        { 
+          error: "Debug engine request failed",
+          details: {
+            message: "Failed to connect to engine server",
+            engineUrl: ENGINE_URL,
+            error: errorMessage,
+          }
+        },
+        { status: 500 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: "Internal server error", details: errorMessage },
+      { 
+        error: "Internal server error",
+        details: {
+          message: errorMessage,
+          name: errorName,
+        }
+      },
       { status: 500 }
     );
   }

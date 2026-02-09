@@ -31,7 +31,20 @@ async function apiRequest<T>(
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(text || "Request failed");
+    // Try to parse error JSON for better error messages
+    try {
+      const errorJson = JSON.parse(text);
+      const errorMessage = errorJson.error || errorJson.message || text;
+      const error = new Error(errorMessage);
+      // Attach details if available
+      if (errorJson.details) {
+        (error as any).details = errorJson.details;
+      }
+      throw error;
+    } catch {
+      // Not JSON, throw with text
+      throw new Error(text || "Request failed");
+    }
   }
 
   const json = await res.json();
