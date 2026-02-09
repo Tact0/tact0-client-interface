@@ -35,18 +35,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: AUTH_ERRORS.INVALID_INPUT }, { status: 400 });
     }
 
-    // Proxy to the engine's /chat endpoint (debug endpoint, not /api/chat)
-    // The engine's main API server exposes /chat for debug mode
-    const debugResponse = await fetch(`${ENGINE_URL}/chat`, {
+    // Proxy to the engine's /api/chat endpoint (same as regular chat)
+    // The engine returns debug data when requested
+    const debugEndpoint = `${ENGINE_URL}/api/chat`;
+    const debugResponse = await fetch(debugEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         ...(ENGINE_API_KEY ? { Authorization: `Bearer ${ENGINE_API_KEY}` } : {}),
       },
       body: JSON.stringify({
-        text: parsed.data.text,
+        message: parsed.data.text,
         sessionId: parsed.data.sessionId ?? `u-${user.id}`,
-        userId: user.id,
+        debug: true, // Request debug information
       }),
     });
 
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
         status: debugResponse.status,
         statusText: debugResponse.statusText,
         errorText,
-        url: `${ENGINE_URL}/chat`,
+        url: debugEndpoint,
         engineUrl: ENGINE_URL,
         hasApiKey: !!ENGINE_API_KEY,
       });
